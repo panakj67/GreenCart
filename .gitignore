@@ -1,12 +1,1 @@
-# Ignore .env
-.env
-
-# Ignore node_modules
-node_modules/
-
-# Ignore build/output folders
-build/
-dist/
-
-# Ignore large installer file
-client/src/assets/Postman-win64-Setup.exe
+node_modules
