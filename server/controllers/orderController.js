@@ -51,6 +51,7 @@ export const placeOrderStripe = async ( req, res ) => {
 
         let amount = await items.reduce( async (acc, item) => {
             const product = await Product.findById(item.product);
+            
             productData.push({
                 name : product.name,
                 price : product.offerPrice,
@@ -61,6 +62,15 @@ export const placeOrderStripe = async ( req, res ) => {
 
         // Add Tax charges 2%
         amount += Math.floor(amount * 0.02);
+
+        // Add this check before creating the Stripe session
+        if (amount < 50) {
+            return res.json({
+              success: false,
+              message: "Minimum order value for online payment must be ₹50"
+            });
+        }
+          
 
         const order = await Order.create({
             userId,
