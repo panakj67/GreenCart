@@ -20,13 +20,13 @@ export const  register = async (req, res) => {
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password, salt);
 
-        let user = user.create({
+        const user = User.create({
             name,
             email,
             password : hashedPassword
         })
 
-        const token = await jwt.sign({ id : newUser._id}, process.env.SECRET_KEY,  { expiresIn: "1d" });
+        const token = await jwt.sign({ id : user._id}, process.env.SECRET_KEY,  { expiresIn: "1d" });
         res.cookie('token' , token, {
             httpOnly : true,
             secure : process.env.NODE_ENV === 'production',
