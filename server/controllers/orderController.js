@@ -106,20 +106,21 @@ export const placeOrderStripe = async ( req, res ) => {
 } 
 
 // Stripe webhooks to verify payments Action : /stripe
-export const stripeWebhooks = async () =>{
+export const stripeWebhooks = async (req, res) =>{
     //Stripe gateway initialise
     const stripeInstance = new stripe(process.env.STRIPE_SECRET_KEY);
-    const sig = request.headers["stripe-signature"];
+    const sig = req.headers["stripe-signature"];
     let event;
 
     try {
         event = stripeInstance.webhooks.constructEvent(
-            request.body,
+            req.body,
             sig,
             process.env.STRIPE_WEBHOOK_SECRET
         );
     } catch (error) {
-        response.status(400).send(`Webhook Error : ${error.message}`)
+        console.error("❌ Webhook signature error:", error.message);
+        res.status(400).send(`Webhook Error : ${error.message}`)
     }
 
     // handle the event
@@ -153,17 +154,17 @@ export const stripeWebhooks = async () =>{
 
             const { orderId } = session.data[0].metadata;
             await Order.findByIdAndDelete(orderId);
+            console.log("❌ Payment failed. Order deleted.");
             break;
         }
             
     
-        default:{
-            console.error(`Unhandled event type ${event.type}`)
-            break;
+        default:
+            console.error(`Unhandled event type ${event.type}`);
         }
-       response.json({recieved : true});   
+        return res.json({recieved : true});   
     }
-}
+
 
 
 export const getUserOrders = async (req, res) => {

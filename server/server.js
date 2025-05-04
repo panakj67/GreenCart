@@ -1,3 +1,4 @@
+
 import express from 'express';
 import connectDB from './configs/db.js';
 import 'dotenv/config.js'
@@ -12,19 +13,24 @@ import addressRouter from './routes/addressRoutes.js'
 import orderRouter from './routes/orderRoutes.js'
 import { stripeWebhooks } from './controllers/orderController.js';
 
+
 const app = express();
 
 await connectDB();
 await connectCloudinary();
+
+const allowedOrigins = [
+    process.env.FRONTEND_URL
+]
 
 
 app.post('/stripe', express.raw({type : 'application/json'}), stripeWebhooks)
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cookieParser());
+app.use(cookieParser());  
 app.use(cors({
-    origin: process.env.FRONTEND_URL,
+    origin: allowedOrigins,
     credentials: true,
 }));
 
