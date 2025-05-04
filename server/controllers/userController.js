@@ -20,13 +20,14 @@ export const  register = async (req, res) => {
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password, salt);
 
-        const user = User.create({
+        const user = await User.create({
             name,
             email,
             password : hashedPassword
         })
 
-        const token = await jwt.sign({ id : user._id}, process.env.SECRET_KEY,  { expiresIn: "1d" });
+
+        const token = await jwt.sign({ id : user._id}, process.env.SECRET_KEY,  { expiresIn: "7d" });
         res.cookie('token' , token, {
             httpOnly : true,
             secure : process.env.NODE_ENV === 'production',
@@ -57,7 +58,7 @@ export const login = async (req, res) => {
             return res.json({success : false, message : "Invalid email or password."});
         }
         
-        const token = await jwt.sign({ id : user._id}, process.env.SECRET_KEY,  { expiresIn: "1d" });
+        const token = await jwt.sign({ id : user._id}, process.env.SECRET_KEY,  { expiresIn: "7d" });
         res.cookie('token' , token, {
             httpOnly : true,
             secure : process.env.NODE_ENV === 'production',

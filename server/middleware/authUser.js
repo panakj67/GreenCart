@@ -8,11 +8,11 @@ const authUser = async (req, res, next) => {
     }
 
     try {
-        const decode = jwt.verify(token, process.env.SECRET_KEY)
+        const decode = jwt.verify(token, process.env.SECRET_KEY);
         if(decode.id){
             req.user = {id : decode.id};
             next();
-        }else return res.json({success : false, message : "Not authorised"});
+        }else return res.json({success : false, message : "Not authorised.."});
 
     } catch (error) {
         console.error(error.message);

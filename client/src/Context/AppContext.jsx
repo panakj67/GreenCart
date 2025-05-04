@@ -40,6 +40,7 @@ export const AppContext = ({ children }) => {
     const fetchUser = async () => {
         try {
             const {data} = await axios.get('/api/user/is-auth')
+            console.log(data)
             if(data.success){
                 setUser(data.user)
                 setCartItems(data.user.cartItems)
