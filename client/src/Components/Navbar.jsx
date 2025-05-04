@@ -87,7 +87,7 @@ const Navbar = () => {
               <div className={`${open ? 'flex' : 'hidden'} absolute top-[60px] left-0 w-full z-100 bg-white shadow-md py-4 flex-col items-start gap-2 px-5 text-sm md:hidden`}>
                 <NavLink to="/" onClick={() => setOpen(false)}>Home</NavLink>
                 <NavLink to="/products" onClick={() => setOpen(false)}>About</NavLink>
-                {user && <NavLink to="/products" onClick={() => {setOpen(false)}}>My orders</NavLink>}
+                {user && <NavLink to="/myorders" onClick={() => {setOpen(false)}}>My orders</NavLink>}
                 <NavLink to="/contact" onClick={() => setOpen(false)}>Contact</NavLink>
 
 
