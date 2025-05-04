@@ -22,6 +22,7 @@ await connectCloudinary();
 const allowedOrigins = [
     process.env.FRONTEND_URL,
     'https://green-cart-tan.vercel.app'
+
 ]
 
 
